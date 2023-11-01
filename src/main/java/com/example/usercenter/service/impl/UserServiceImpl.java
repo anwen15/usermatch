@@ -1,4 +1,5 @@
 package com.example.usercenter.service.impl;
+import java.util.Date;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,7 +31,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     UserMapper userMapper;
 
     //密码加密
-    public static final String stal="anwen";
+    private static final String stal="anwen";
+    private static final String user_login_state="userloginstate";
 
     @Override
     public long userRegister(String userAccount, String userPassword, String checkpassword) {
@@ -74,7 +78,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public User dologin(String userAccount, String userPassword) {
+    public User dologin(String userAccount, String userPassword, HttpServletRequest request) {
         //1.校验
         if (StringUtils.isAnyEmpty(userAccount,userPassword)) {
             return null;
@@ -103,9 +107,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             log.info("用户密码不匹配");
             return null;
         }
+        //用户数据脱敏
+        User saftyuser = new User();
+        saftyuser.setId(user.getId());
+        saftyuser.setUsername(user.getUsername());
+        saftyuser.setUserAccount(user.getUserAccount());
+        saftyuser.setAvatarUrl(user.getAvatarUrl());
+        saftyuser.setPhone(user.getPhone());
+        saftyuser.setEmail(user.getEmail());
+        saftyuser.setUserStatus(user.getUserStatus());
+        saftyuser.setCreateTime(user.getCreateTime());
+        saftyuser.setUpdateTime(user.getUpdateTime());
         //记录用户的登录态
-
-        return user;
+        HttpSession session = request.getSession();
+        session.setAttribute(user_login_state, saftyuser);
+        return saftyuser;
     }
 }
 

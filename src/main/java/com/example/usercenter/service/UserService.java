@@ -3,6 +3,8 @@ package com.example.usercenter.service;
 import com.example.usercenter.model.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
 * @author nicefang
 * @description 针对表【user】的数据库操作Service
@@ -25,5 +27,5 @@ public interface UserService extends IService<User> {
      * @param userPassword
      * @return
      */
-    User dologin(String userAccount, String userPassword);
+    User dologin(String userAccount, String userPassword, HttpServletRequest request);
 }

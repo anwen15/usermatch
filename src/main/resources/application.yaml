@@ -4,8 +4,18 @@ spring:
     username: root
     password: 531184
     driver-class-name: com.mysql.cj.jdbc.Driver
+  #session失效时间
+  session:
+    timeout: 86400
 server:
   port: 8080
+  servlet:
+    context-path: /api
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
+  global-config:
+    db-config:
+      logic-delete-field: isDelete
+      logic-delete-value: 1
+      logic-not-delete-value: 0

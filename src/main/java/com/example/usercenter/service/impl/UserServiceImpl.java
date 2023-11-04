@@ -1,5 +1,4 @@
 package com.example.usercenter.service.impl;
-import java.util.Date;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -13,10 +12,10 @@ import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.io.BufferedReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.example.usercenter.contant.UserContant.USER_LOGIN_STATE;
 
 /**
 * @author nicefang
@@ -31,8 +30,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     UserMapper userMapper;
 
     //密码加密
-    private static final String stal="anwen";
-    private static final String user_login_state="userloginstate";
+    private static final String STAL ="anwen";
+
 
     @Override
     public long userRegister(String userAccount, String userPassword, String checkpassword) {
@@ -65,7 +64,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             return -1;
         }
         //对密码进行加密
-        String encodepassword = DigestUtils.md5DigestAsHex((stal + userPassword).getBytes());
+        String encodepassword = DigestUtils.md5DigestAsHex((STAL + userPassword).getBytes());
         //插入数据
         User user = new User();
         user.setUserAccount(userAccount);
@@ -90,14 +89,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             return null;
         }
         //校验账户不能包含特殊字符
-        String validRule = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%…… &*（）——+|{}【】‘；：”“’。，、？]";
-        Matcher matcher = Pattern.compile(validRule).matcher(userAccount);
+        String validPattern = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+        Matcher matcher = Pattern.compile(validPattern).matcher(userAccount);
         // 如果包含非法字符,则返回
         if(matcher.find()){
             return null;
         }
         //对密码进行加密
-        String encodepassword = DigestUtils.md5DigestAsHex((stal + userPassword).getBytes());
+        String encodepassword = DigestUtils.md5DigestAsHex((STAL + userPassword).getBytes());
         //查询用户是否存在
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("userAccount",userAccount);
@@ -108,6 +107,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             return null;
         }
         //用户数据脱敏
+        User saftyuser = getSaftyUser(user);
+        //记录用户的登录态
+        request.getSession().setAttribute(USER_LOGIN_STATE, saftyuser);
+        return saftyuser;
+    }
+
+    //用户脱敏
+    @Override
+    public User getSaftyUser(User user) {
+        if (user == null) {
+            return null;
+        }
         User saftyuser = new User();
         saftyuser.setId(user.getId());
         saftyuser.setUsername(user.getUsername());
@@ -118,9 +129,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         saftyuser.setUserStatus(user.getUserStatus());
         saftyuser.setCreateTime(user.getCreateTime());
         saftyuser.setUpdateTime(user.getUpdateTime());
-        //记录用户的登录态
-        HttpSession session = request.getSession();
-        session.setAttribute(user_login_state, saftyuser);
+        saftyuser.setUserRole(user.getUserRole());
         return saftyuser;
     }
 }

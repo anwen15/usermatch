@@ -34,7 +34,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
 
     @Override
-    public long userRegister(String userAccount, String userPassword, String checkpassword) {
+    public long userRegister(String userAccount, String userPassword, String checkpassword,String planetcode) {
         //1.校验
         if (StringUtils.isAnyEmpty(userAccount,userPassword,checkpassword)) {
             return -1;
@@ -43,6 +43,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             return -1;
         }
         if (userPassword.length() < 8 || checkpassword.length() < 8) {
+            return -1;
+        }
+        if (planetcode.length() > 6) {
             return -1;
         }
         //校验账户不能包含特殊字符
@@ -59,6 +62,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if (count > 0) {
             return -1;
         }
+        //星球编号
+        queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("planetCode",planetcode);
+        count = userMapper.selectCount(queryWrapper);
+        if (count > 0) {
+            return -1;
+        }
         //校验输入密码与user密码是否相同
         if (userPassword != checkpassword) {
             return -1;
@@ -69,6 +79,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User user = new User();
         user.setUserAccount(userAccount);
         user.setUserPassword(encodepassword);
+        user.setPlanetCode(planetcode);
         boolean save = this.save(user);
         if (!save) {
             return -1;
@@ -129,6 +140,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         saftyuser.setUserStatus(user.getUserStatus());
         saftyuser.setCreateTime(user.getCreateTime());
         saftyuser.setUpdateTime(user.getUpdateTime());
+        saftyuser.setPlanetCode(user.getPlanetCode());
         saftyuser.setUserRole(user.getUserRole());
         return saftyuser;
     }

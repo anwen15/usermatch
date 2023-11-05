@@ -32,10 +32,11 @@ public class UserController {
         String userAccount = userRegisterRequest.getUserAccount();
         String userpassword = userRegisterRequest.getUserPassword();
         String checkpassword = userRegisterRequest.getCheckPassword();
-        if (StringUtils.isAnyEmpty(checkpassword, userAccount, userpassword)) {
+        String planetCode=userRegisterRequest.getPlanetCode();
+        if (StringUtils.isAnyEmpty(checkpassword, userAccount, userpassword,planetCode)) {
             return null;
         }
-        return userService.userRegister(userAccount, userpassword, checkpassword);
+        return userService.userRegister(userAccount, userpassword, checkpassword,planetCode);
     }
 
     @PostMapping("/login")

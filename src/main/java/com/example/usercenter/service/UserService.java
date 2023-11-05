@@ -31,4 +31,8 @@ public interface UserService extends IService<User> {
 
     //用户脱敏
     User getSaftyUser(User user);
+    /**
+     * 用户注销
+     */
+    int userlogout(HttpServletRequest request);
 }

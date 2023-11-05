@@ -132,6 +132,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         saftyuser.setUserRole(user.getUserRole());
         return saftyuser;
     }
+
+    @Override
+    public int userlogout(HttpServletRequest request) {
+        request.getSession().removeAttribute(USER_LOGIN_STATE);
+        return 1;
+    }
 }
 
 

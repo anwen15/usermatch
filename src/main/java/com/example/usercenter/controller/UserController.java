@@ -2,6 +2,7 @@ package com.example.usercenter.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.usercenter.common.BaseResponse;
+import com.example.usercenter.common.EoorCode;
 import com.example.usercenter.common.ResultUtils;
 import com.example.usercenter.model.domain.User;
 import com.example.usercenter.model.request.UserLoginRequest;
@@ -28,14 +29,14 @@ public class UserController {
     @PostMapping("/register")
     public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
         if (userRegisterRequest == null) {
-            return null;
+            return ResultUtils.error(EoorCode.PARAMS_ERROR);
         }
         String userAccount = userRegisterRequest.getUserAccount();
         String userpassword = userRegisterRequest.getUserPassword();
         String checkpassword = userRegisterRequest.getCheckPassword();
         String planetCode=userRegisterRequest.getPlanetCode();
         if (StringUtils.isAnyEmpty(checkpassword, userAccount, userpassword,planetCode)) {
-            return null;
+            return ResultUtils.error(EoorCode.PARAMS_ERROR);
         }
         long result= userService.userRegister(userAccount, userpassword, checkpassword,planetCode);
         return ResultUtils.success(result);

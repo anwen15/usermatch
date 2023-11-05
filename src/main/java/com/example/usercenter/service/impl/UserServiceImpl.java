@@ -37,7 +37,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public long userRegister(String userAccount, String userPassword, String checkpassword,String planetcode) {
         //1.校验
         if (StringUtils.isAnyEmpty(userAccount,userPassword,checkpassword)) {
-            return -1;
+            return ;
         }
         if (userAccount.length() < 4) {
             return -1;

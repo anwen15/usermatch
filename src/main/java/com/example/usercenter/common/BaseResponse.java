@@ -14,14 +14,21 @@ public class BaseResponse<T> implements Serializable {
 
     private int Code;
     private String message;
+    private String description;
 
-    public BaseResponse(int code,T data, String message) {
+    public BaseResponse(int code,T data, String message,String description) {
         Data = data;
         Code = code;
         this.message = message;
+        this.description=description;
     }
 
-    public BaseResponse(int code,T data) {
-        this(code,data,  "");
+    public BaseResponse(EoorCode  eoorCode) {
+        this(eoorCode.getCode(),null,eoorCode.getMessage(),eoorCode.getDescription());
+    }
+
+    public BaseResponse(int code, T data,String description) {
+        this(code,data,  "",description);
+
     }
 }

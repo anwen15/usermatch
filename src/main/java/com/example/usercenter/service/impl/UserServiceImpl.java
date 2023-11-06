@@ -2,6 +2,8 @@ package com.example.usercenter.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.usercenter.common.EoorCode;
+import com.example.usercenter.excepttion.BusinessException;
 import com.example.usercenter.model.domain.User;
 import com.example.usercenter.service.UserService;
 import com.example.usercenter.mapper.UserMapper;
@@ -37,23 +39,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public long userRegister(String userAccount, String userPassword, String checkpassword,String planetcode) {
         //1.校验
         if (StringUtils.isAnyEmpty(userAccount,userPassword,checkpassword)) {
-            return ;
+            throw new BusinessException(EoorCode.PARAMS_ERROR,"用户名或密码不能为空");
         }
         if (userAccount.length() < 4) {
-            return -1;
+            throw new BusinessException(EoorCode.PARAMS_ERROR,"长度过小");
         }
         if (userPassword.length() < 8 || checkpassword.length() < 8) {
-            return -1;
+            throw new BusinessException(EoorCode.PARAMS_ERROR,"长度过小" );
         }
         if (planetcode.length() > 6) {
-            return -1;
+            throw new BusinessException(EoorCode.PARAMS_ERROR ,"长度过长");
         }
         //校验账户不能包含特殊字符
         String validRule = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%…… &*（）——+|{}【】‘；：”“’。，、？]";
         Matcher matcher = Pattern.compile(validRule).matcher(userAccount);
         // 如果包含非法字符,则返回
         if(matcher.find()){
-            return -1;
+            throw new BusinessException(EoorCode.PARAMS_ERROR);
         }
         //账户不能重复
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
@@ -70,7 +72,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             return -1;
         }
         //校验输入密码与user密码是否相同
-        if (userPassword != checkpassword) {
+        if (!userPassword.equals(checkpassword)) {
             return -1;
         }
         //对密码进行加密

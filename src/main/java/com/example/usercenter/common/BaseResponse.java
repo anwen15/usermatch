@@ -29,6 +29,6 @@ public class BaseResponse<T> implements Serializable {
 
     public BaseResponse(int code, T data,String description) {
         this(code,data,  "",description);
-
     }
+
 }

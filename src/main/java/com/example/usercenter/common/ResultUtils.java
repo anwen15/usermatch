@@ -21,4 +21,14 @@ public class ResultUtils {
     public static BaseResponse error(EoorCode eoorCode) {
         return new BaseResponse(eoorCode);
     }
+    public static BaseResponse error(EoorCode eoorCode,String message,String description) {
+        return new BaseResponse(eoorCode.getCode(),null,message,description);
+    }
+    public static BaseResponse error(int Code,String message,String description) {
+        return new BaseResponse(Code,null, message, description);
+    }
+    public static BaseResponse error(EoorCode eoorCode,String description) {
+        return new BaseResponse(eoorCode.getCode(),null,eoorCode.getMessage(),description);
+    }
+
 }

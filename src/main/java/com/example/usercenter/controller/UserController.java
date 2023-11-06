@@ -46,12 +46,12 @@ public class UserController {
     @PostMapping("/login")
     public BaseResponse<User> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
         if (userLoginRequest == null) {
-            return null;
+            throw new BusinessException(EoorCode.NULL_ERROR);
         }
         String userAccount = userLoginRequest.getUserAccount();
         String userpassword = userLoginRequest.getUserPassword();
         if (StringUtils.isAnyEmpty(userAccount, userpassword)) {
-            return null;
+            throw new BusinessException(EoorCode.NULL_ERROR);
         }
 
         User user = userService.dologin(userAccount, userpassword, request);
@@ -60,7 +60,7 @@ public class UserController {
     @PostMapping("/logout")
     public BaseResponse<Integer> userLogout(HttpServletRequest request) {
         if (request == null) {
-            return null;
+            throw new BusinessException(EoorCode.SYSTEM_ERROR);
         }
 
         int userlogout = userService.userlogout(request);
@@ -71,7 +71,7 @@ public class UserController {
         Object attribute = request.getSession().getAttribute(USER_LOGIN_STATE);
         User currentuser=(User)attribute;
         if (currentuser == null) {
-            return null;
+            throw new BusinessException(EoorCode.NULL_ERROR);
         }
         Long id = currentuser.getId();
         // TODO: 5/11/2023 校验用户是否合法 
@@ -98,10 +98,10 @@ public class UserController {
     @PostMapping("/delete")
     public BaseResponse<Boolean> delete(@RequestBody long id,HttpServletRequest request) {
         if (!isAdmin(request)) {
-            return null;
+            throw new BusinessException(EoorCode.NO_AUTH);
         }
         if (id <= 0) {
-            return null;
+            throw new BusinessException(EoorCode.PARAMS_ERROR);
         }
         boolean removeById = userService.removeById(id);
         return  ResultUtils.success(removeById);

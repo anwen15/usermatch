@@ -62,18 +62,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         queryWrapper.eq("userAccount",userAccount);
         long count = userMapper.selectCount(queryWrapper);
         if (count > 0) {
-            return -1;
+            throw new BusinessException(EoorCode.PARAMS_ERROR);
         }
         //星球编号
         queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("planetCode",planetcode);
         count = userMapper.selectCount(queryWrapper);
         if (count > 0) {
-            return -1;
+            throw new BusinessException(EoorCode.PARAMS_ERROR);
         }
         //校验输入密码与user密码是否相同
         if (!userPassword.equals(checkpassword)) {
-            return -1;
+            throw new BusinessException(EoorCode.PARAMS_ERROR);
         }
         //对密码进行加密
         String encodepassword = DigestUtils.md5DigestAsHex((STAL + userPassword).getBytes());
@@ -84,7 +84,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         user.setPlanetCode(planetcode);
         boolean save = this.save(user);
         if (!save) {
-            return -1;
+            throw new BusinessException(EoorCode.PARAMS_ERROR);
         }
         return user.getId();
     }
@@ -93,20 +93,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public User dologin(String userAccount, String userPassword, HttpServletRequest request) {
         //1.校验
         if (StringUtils.isAnyEmpty(userAccount,userPassword)) {
-            return null;
+            throw new BusinessException(EoorCode.PARAMS_ERROR);
         }
         if (userAccount.length() < 4) {
-            return null;
+            throw new BusinessException(EoorCode.PARAMS_ERROR);
         }
         if (userPassword.length() < 8 ) {
-            return null;
+            throw new BusinessException(EoorCode.PARAMS_ERROR);
         }
         //校验账户不能包含特殊字符
         String validPattern = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
         Matcher matcher = Pattern.compile(validPattern).matcher(userAccount);
         // 如果包含非法字符,则返回
         if(matcher.find()){
-            return null;
+            throw new BusinessException(EoorCode.PARAMS_ERROR);
         }
         //对密码进行加密
         String encodepassword = DigestUtils.md5DigestAsHex((STAL + userPassword).getBytes());
@@ -117,7 +117,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User user = userMapper.selectOne(queryWrapper);
         if (user == null) {
             log.info("用户密码不匹配");
-            return null;
+            throw new BusinessException(EoorCode.PARAMS_ERROR);
         }
         //用户数据脱敏
         User saftyuser = getSaftyUser(user);
@@ -130,7 +130,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public User getSaftyUser(User user) {
         if (user == null) {
-            return null;
+            throw new BusinessException(EoorCode.PARAMS_ERROR);
         }
         User saftyuser = new User();
         saftyuser.setId(user.getId());

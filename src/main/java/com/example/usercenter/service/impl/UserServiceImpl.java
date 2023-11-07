@@ -96,7 +96,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new BusinessException(EoorCode.PARAMS_ERROR);
         }
         if (userAccount.length() < 4) {
-            throw new BusinessException(EoorCode.PARAMS_ERROR);
+            throw new BusinessException(EoorCode.PARAMS_ERROR,"长度过小");
         }
         if (userPassword.length() < 8 ) {
             throw new BusinessException(EoorCode.PARAMS_ERROR);
@@ -117,7 +117,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User user = userMapper.selectOne(queryWrapper);
         if (user == null) {
             log.info("用户密码不匹配");
-            throw new BusinessException(EoorCode.PARAMS_ERROR);
+            throw new BusinessException(EoorCode.PARAMS_ERROR,"用户或密码不匹配");
         }
         //用户数据脱敏
         User saftyuser = getSaftyUser(user);

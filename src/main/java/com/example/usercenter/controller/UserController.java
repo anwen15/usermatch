@@ -30,14 +30,14 @@ public class UserController {
     @PostMapping("/register")
     public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
         if (userRegisterRequest == null) {
-            throw new BusinessException(EoorCode.PARAMS_ERROR);
+            throw new BusinessException(EoorCode.PARAMS_ERROR,"网络连接无响应");
         }
         String userAccount = userRegisterRequest.getUserAccount();
         String userpassword = userRegisterRequest.getUserPassword();
         String checkpassword = userRegisterRequest.getCheckPassword();
         String planetCode=userRegisterRequest.getPlanetCode();
         if (StringUtils.isAnyEmpty(checkpassword, userAccount, userpassword,planetCode)) {
-            return ResultUtils.error(EoorCode.PARAMS_ERROR);
+            return ResultUtils.error(EoorCode.PARAMS_ERROR,"需要参数为空");
         }
         long result= userService.userRegister(userAccount, userpassword, checkpassword,planetCode);
         return ResultUtils.success(result);
@@ -46,12 +46,12 @@ public class UserController {
     @PostMapping("/login")
     public BaseResponse<User> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
         if (userLoginRequest == null) {
-            throw new BusinessException(EoorCode.NULL_ERROR);
+            throw new BusinessException(EoorCode.NULL_ERROR,"网络连接无响应");
         }
         String userAccount = userLoginRequest.getUserAccount();
         String userpassword = userLoginRequest.getUserPassword();
         if (StringUtils.isAnyEmpty(userAccount, userpassword)) {
-            throw new BusinessException(EoorCode.NULL_ERROR);
+            throw new BusinessException(EoorCode.NULL_ERROR,"账号或密码不能为空");
         }
 
         User user = userService.dologin(userAccount, userpassword, request);
@@ -60,7 +60,7 @@ public class UserController {
     @PostMapping("/logout")
     public BaseResponse<Integer> userLogout(HttpServletRequest request) {
         if (request == null) {
-            throw new BusinessException(EoorCode.SYSTEM_ERROR);
+            throw new BusinessException(EoorCode.SYSTEM_ERROR,"网络连接无响应");
         }
 
         int userlogout = userService.userlogout(request);
@@ -71,7 +71,7 @@ public class UserController {
         Object attribute = request.getSession().getAttribute(USER_LOGIN_STATE);
         User currentuser=(User)attribute;
         if (currentuser == null) {
-            throw new BusinessException(EoorCode.NULL_ERROR);
+            throw new BusinessException(EoorCode.NULL_ERROR,"当前用户信息为空");
         }
         Long id = currentuser.getId();
         // TODO: 5/11/2023 校验用户是否合法 
@@ -85,7 +85,7 @@ public class UserController {
     public BaseResponse<List<User>> searchUser(String username,HttpServletRequest request) {
         //管理员功能
         if (!isAdmin(request)) {
-            throw new BusinessException(EoorCode.PARAMS_ERROR);
+            throw new BusinessException(EoorCode.PARAMS_ERROR,"权限不足");
         }
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
         if (StringUtils.isNotBlank(username)) {
@@ -98,10 +98,10 @@ public class UserController {
     @PostMapping("/delete")
     public BaseResponse<Boolean> delete(@RequestBody long id,HttpServletRequest request) {
         if (!isAdmin(request)) {
-            throw new BusinessException(EoorCode.NO_AUTH);
+            throw new BusinessException(EoorCode.NO_AUTH,"网络连接无响应");
         }
         if (id <= 0) {
-            throw new BusinessException(EoorCode.PARAMS_ERROR);
+            throw new BusinessException(EoorCode.PARAMS_ERROR,"无用户");
         }
         boolean removeById = userService.removeById(id);
         return  ResultUtils.success(removeById);

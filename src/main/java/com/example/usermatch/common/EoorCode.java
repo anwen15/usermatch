@@ -1,4 +1,4 @@
-package com.example.usercenter.common;
+package com.example.usermatch.common;
 
 public enum EoorCode {
     SUCCESS(20000, "成功", ""),

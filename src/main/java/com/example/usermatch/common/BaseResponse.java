@@ -1,4 +1,4 @@
-package com.example.usercenter.common;
+package com.example.usermatch.common;
 
 import lombok.Data;
 

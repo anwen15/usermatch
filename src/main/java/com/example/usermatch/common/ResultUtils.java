@@ -1,6 +1,4 @@
-package com.example.usercenter.common;
-
-import lombok.Data;
+package com.example.usermatch.common;
 
 public class ResultUtils {
     /**

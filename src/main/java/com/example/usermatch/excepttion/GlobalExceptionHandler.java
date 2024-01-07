@@ -1,8 +1,8 @@
-package com.example.usercenter.excepttion;
+package com.example.usermatch.excepttion;
 
-import com.example.usercenter.common.BaseResponse;
-import com.example.usercenter.common.EoorCode;
-import com.example.usercenter.common.ResultUtils;
+import com.example.usermatch.common.BaseResponse;
+import com.example.usermatch.common.EoorCode;
+import com.example.usermatch.common.ResultUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

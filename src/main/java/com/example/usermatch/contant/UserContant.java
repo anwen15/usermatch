@@ -1,4 +1,4 @@
-package com.example.usercenter.contant;
+package com.example.usermatch.contant;
 
 public interface UserContant {
     /**

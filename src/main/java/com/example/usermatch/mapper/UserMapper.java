@@ -1,6 +1,6 @@
-package com.example.usercenter.mapper;
+package com.example.usermatch.mapper;
 
-import com.example.usercenter.model.domain.User;
+import com.example.usermatch.model.domain.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

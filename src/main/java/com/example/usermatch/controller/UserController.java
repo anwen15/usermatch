@@ -1,14 +1,14 @@
-package com.example.usercenter.controller;
+package com.example.usermatch.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.usercenter.common.BaseResponse;
-import com.example.usercenter.common.EoorCode;
-import com.example.usercenter.common.ResultUtils;
-import com.example.usercenter.excepttion.BusinessException;
-import com.example.usercenter.model.domain.User;
-import com.example.usercenter.model.request.UserLoginRequest;
-import com.example.usercenter.model.request.UserRegisterRequest;
-import com.example.usercenter.service.UserService;
+import com.example.usermatch.common.BaseResponse;
+import com.example.usermatch.common.EoorCode;
+import com.example.usermatch.common.ResultUtils;
+import com.example.usermatch.excepttion.BusinessException;
+import com.example.usermatch.model.domain.User;
+import com.example.usermatch.model.request.UserLoginRequest;
+import com.example.usermatch.model.request.UserRegisterRequest;
+import com.example.usermatch.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.example.usercenter.contant.UserContant.ADMIN_ROLE;
-import static com.example.usercenter.contant.UserContant.USER_LOGIN_STATE;
+import static com.example.usermatch.contant.UserContant.ADMIN_ROLE;
+import static com.example.usermatch.contant.UserContant.USER_LOGIN_STATE;
 
 @RestController
 @RequestMapping("/user")

@@ -1,6 +1,6 @@
-package com.example.usercenter.excepttion;
+package com.example.usermatch.excepttion;
 
-import com.example.usercenter.common.EoorCode;
+import com.example.usermatch.common.EoorCode;
 
 public class BusinessException extends RuntimeException {
     private int code;

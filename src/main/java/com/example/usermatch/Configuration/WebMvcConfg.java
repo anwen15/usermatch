@@ -1,4 +1,4 @@
-package com.example.usercenter.Configuration;
+package com.example.usermatch.Configuration;
 
 
 import org.springframework.context.annotation.Configuration;

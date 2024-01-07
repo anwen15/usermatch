@@ -1,4 +1,4 @@
-package com.example.usercenter.model.request;
+package com.example.usermatch.model.request;
 
 import lombok.Data;
 

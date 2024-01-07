@@ -1,12 +1,12 @@
-package com.example.usercenter.service.impl;
+package com.example.usermatch.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.usercenter.common.EoorCode;
-import com.example.usercenter.excepttion.BusinessException;
-import com.example.usercenter.model.domain.User;
-import com.example.usercenter.service.UserService;
-import com.example.usercenter.mapper.UserMapper;
+import com.example.usermatch.common.EoorCode;
+import com.example.usermatch.excepttion.BusinessException;
+import com.example.usermatch.model.domain.User;
+import com.example.usermatch.service.UserService;
+import com.example.usermatch.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.example.usercenter.contant.UserContant.USER_LOGIN_STATE;
+import static com.example.usermatch.contant.UserContant.USER_LOGIN_STATE;
 
 /**
 * @author nicefang

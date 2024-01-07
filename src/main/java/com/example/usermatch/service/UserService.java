@@ -1,6 +1,6 @@
-package com.example.usercenter.service;
+package com.example.usermatch.service;
 
-import com.example.usercenter.model.domain.User;
+import com.example.usermatch.model.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;
